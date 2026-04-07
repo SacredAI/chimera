@@ -365,6 +365,18 @@ async fn scope_isolation_between_repos() {
     assert_eq!(resp.status(), StatusCode::NO_CONTENT);
 }
 
+#[tokio::test]
+async fn server_binds_to_loopback_only() {
+    let tmp = TempDir::new().unwrap();
+    let (_app, mgr) = make_test_app(&tmp).await;
+
+    let addr = start(mgr, 0).await.unwrap();
+    assert!(
+        addr.ip().is_loopback(),
+        "cache server must bind to loopback, got {addr}"
+    );
+}
+
 #[test]
 fn scope_encode_decode_roundtrip() {
     let values = [

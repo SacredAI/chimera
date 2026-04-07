@@ -70,7 +70,7 @@ pub fn router(manager: SharedManager) -> Router {
 /// Returns the actual bound address (useful when port=0 for tests).
 pub async fn start(manager: SharedManager, port: u16) -> Result<SocketAddr> {
     let app = router(manager);
-    let addr = SocketAddr::from(([0, 0, 0, 0], port));
+    let addr = SocketAddr::from(([127, 0, 0, 1], port));
     let listener = TcpListener::bind(addr).await?;
     let local_addr = listener.local_addr()?;
 
